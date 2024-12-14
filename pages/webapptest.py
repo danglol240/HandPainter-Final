@@ -48,9 +48,10 @@ while True:
     success, frame = cap.read()
     frame = cv2.flip(frame, 1)
     
+    
     # Convert the frame to RGB color space for hand tracking
     img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
+    frame_holder.image(frame, channels="RGB")
     # Process the frame to detect hand landmarks
     results = hands.process(img)
     lanmark = []
