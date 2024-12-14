@@ -13,7 +13,7 @@ cap.set(10, 150)  # Set độ sáng
 
 st.title("Test web painter")
 
-frame_holder = st.empty()
+frame_holder = st.image([])
 stop_button =st.button("Stop")
 
 # Sử dụng Mediapipe để track khung skeleton
