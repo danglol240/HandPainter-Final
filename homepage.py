@@ -6,14 +6,5 @@ st.set_page_config(
 )
 
 st.header("XIN CHÀO :wave:",divider="blue")
-#st.write("Dưới đây là bài làm Project-1 của 1 sinh viên Bách Khoa")
-st.markdown("""
-<style>
-.big-font {
-    font-size:300px !important;
-}
-</style>
-""", unsafe_allow_html=True)
-
-st.markdown('<p class="big-font">Hello World !!</p>', unsafe_allow_html=True)
+st.write("Dưới đây là bài làm: :red[Project-1] của 1 sinh viên Bách Khoa")
 st.sidebar.success("Select the app")
