@@ -5,20 +5,24 @@ import time
 import numpy as np
 import streamlit as st
 
+st.set_page_config(
+    page_title=("Handpainter"),
+    page_icon=(":camera_with_flash:"),
+)
+st.title("Online Hand Gestures painter :movie_camera:")
+
 # Set webcam của máy
 cap = cv2.VideoCapture(0)
 cap.set(3, 1280)  # Set chiều dài màn hình 
 cap.set(4, 720)  # Set chiều rộng màn hình
 cap.set(10, 150)  # Set độ sáng
-
-st.title("Online Hand Gestures painter")
-
 frame_holder = st.empty()
 col1,col2=st.columns(2)
 with col1:
     clear_button = st.button("clear the screen")
 with col2:
     stop_button = st.button("Stop the app")
+
 # Sử dụng Mediapipe để track khung skeleton
 mpHands = mp.solutions.hands
 hands = mpHands.Hands()
@@ -45,6 +49,10 @@ print(mylist)
 xp, yp = 0, 0
 # Create a blank canvas to draw on
 canvas = np.zeros((720, 1280, 3), np.uint8)
+if clear_button:
+    with st.spinner(':blue[Clearing screen] please wait... :hourglass:'):
+        time.sleep(3)
+    canvas = np.zeros((720, 1280, 3), np.uint8)
 
 while cap.isOpened() and not stop_button:
     # Read a frame from the webcam and flip it horizontally
@@ -141,11 +149,12 @@ while cap.isOpened() and not stop_button:
     frame_holder.image(frame, channels="BGR")
     cv2.imshow('canvas', canvas)
 
-    if clear_button:
-        canvas = np.zeros((720, 1280, 3), np.uint8)
     # Break the loop if the 'q' key is pressed
     if cv2.waitKey(1) & 0xFF == ord('q') or stop_button:
         break
 
+
+with st.spinner(':blue[Stopping app] :hourglass:'):
+    time.sleep(3)
 cap.release()
 cv2.destroyAllWindows()
