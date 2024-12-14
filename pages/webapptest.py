@@ -14,6 +14,7 @@ cap.set(10, 150)  # Set độ sáng
 st.title("Test web painter")
 
 frame_holder = st.empty()
+stop_button =st.button("Stop")
 
 # Sử dụng Mediapipe để track khung skeleton
 mpHands = mp.solutions.hands
@@ -43,15 +44,18 @@ xp, yp = 0, 0
 # Create a blank canvas to draw on
 canvas = np.zeros((720, 1280, 3), np.uint8)
 
-while True:
+while cap.isOpened() and not stop_button:
     # Read a frame from the webcam and flip it horizontally
     success, frame = cap.read()
     frame = cv2.flip(frame, 1)
     
-    
+    if not success:
+        st.write("Video Capture stopped")
+        break
+
     # Convert the frame to RGB color space for hand tracking
     img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    frame_holder.image(frame, channels="RGB")
+
     # Process the frame to detect hand landmarks
     results = hands.process(img)
     lanmark = []
@@ -138,5 +142,8 @@ while True:
     cv2.imshow('canvas', canvas)
 
     # Break the loop if the 'q' key is pressed
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    if cv2.waitKey(1) & 0xFF == ord('q') or stop_button:
         break
+
+cap.release()
+cv2.destroyAllWindows()
