@@ -11,11 +11,14 @@ cap.set(3, 1280)  # Set chiều dài màn hình
 cap.set(4, 720)  # Set chiều rộng màn hình
 cap.set(10, 150)  # Set độ sáng
 
-st.title("Test web painter")
+st.title("Online Hand Gestures painter")
 
 frame_holder = st.empty()
-stop_button =st.button("Stop")
-
+col1,col2=st.columns(2)
+with col1:
+    clear_button = st.button("clear the screen")
+with col2:
+    stop_button = st.button("Stop the app")
 # Sử dụng Mediapipe để track khung skeleton
 mpHands = mp.solutions.hands
 hands = mpHands.Hands()
@@ -40,7 +43,6 @@ header = overlist[0]
 
 print(mylist)
 xp, yp = 0, 0
-
 # Create a blank canvas to draw on
 canvas = np.zeros((720, 1280, 3), np.uint8)
 
@@ -123,8 +125,6 @@ while cap.isOpened() and not stop_button:
     imgGray = cv2.cvtColor(canvas, cv2.COLOR_BGR2GRAY)
     _, imgInv = cv2.threshold(imgGray, 50, 255, cv2.THRESH_BINARY_INV)
     imgInv = cv2.cvtColor(imgInv, cv2.COLOR_GRAY2BGR)
-
-    # Use bitwise operations to blend the frame with the canvas
     frame = cv2.bitwise_and(frame, imgInv)
     frame = cv2.bitwise_or(frame, canvas)
 
@@ -141,6 +141,8 @@ while cap.isOpened() and not stop_button:
     frame_holder.image(frame, channels="BGR")
     cv2.imshow('canvas', canvas)
 
+    if clear_button:
+        canvas = np.zeros((720, 1280, 3), np.uint8)
     # Break the loop if the 'q' key is pressed
     if cv2.waitKey(1) & 0xFF == ord('q') or stop_button:
         break
