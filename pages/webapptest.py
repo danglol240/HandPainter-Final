@@ -46,10 +46,10 @@ canvas = np.zeros((720, 1280, 3), np.uint8)
 
 while cap.isOpened() and not stop_button:
     # Read a frame from the webcam and flip it horizontally
-    success, frame = cap.read()
+    ret, frame = cap.read()
     frame = cv2.flip(frame, 1)
     
-    if not success:
+    if not ret:
         st.write("Video Capture stopped")
         break
 
